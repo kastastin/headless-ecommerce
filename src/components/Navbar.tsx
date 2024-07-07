@@ -19,15 +19,22 @@ const Navbar = () => {
       {/* Bigger screens */}
       <div className="hidden h-full items-center justify-between gap-8 md:flex">
         {/* Left */}
-        <div className="w-1/3">
+        <div className="flex w-1/3 items-center gap-12 xl:w-1/2">
           <Link href="/" className="flex items-center gap-3">
             <Image src="/logo.png" alt="Logo" width={24} height={24} />
             <div className="text-2xl tracking-wide">SHOP</div>
           </Link>
+          <div className="hidden gap-4 xl:flex">
+            <Link href="/">Homepage</Link>
+            <Link href="/">Shop</Link>
+            <Link href="/">Deal</Link>
+            <Link href="/">About</Link>
+            <Link href="/">Contact</Link>
+          </div>
         </div>
 
         {/* Right */}
-        <div className="flex w-2/3 items-center justify-between gap-8">
+        <div className="flex w-2/3 items-center justify-between gap-8 xl:w-1/2">
           <Searchbar />
           <NavIcons />
         </div>
