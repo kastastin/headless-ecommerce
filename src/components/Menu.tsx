@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-export const Menu = () => {
+const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -32,3 +32,5 @@ export const Menu = () => {
     </div>
   );
 };
+
+export default Menu;
