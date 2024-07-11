@@ -41,7 +41,7 @@ const ProductImages = () => {
         {images.map((image, i) => (
           <div
             key={image.id}
-            className="relative mt-4 h-32 w-1/4 gap-4"
+            className="relative mt-4 h-32 w-1/4 cursor-pointer gap-4"
             onClick={() => setImageIndex(i)}
           >
             <Image
