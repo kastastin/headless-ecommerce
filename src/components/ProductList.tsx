@@ -6,13 +6,18 @@ import DOMPurify from "isomorphic-dompurify";
 import { wixClientServer } from "@/lib/wixClientServer";
 
 interface ProductListProps {
-  categoryId: string;
   limit?: number;
+  categoryId: string;
+  searchParams?: any;
 }
 
 const DEFAULT_PRODUCTS_LIMIT = 20;
 
-const ProductList = async ({ categoryId, limit }: ProductListProps) => {
+const ProductList = async ({
+  limit,
+  categoryId,
+  searchParams,
+}: ProductListProps) => {
   const wixClient = await wixClientServer();
 
   const res = await wixClient.products

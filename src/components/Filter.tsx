@@ -26,7 +26,7 @@ const Filter = () => {
         />
 
         <select
-          name="cat"
+          name="category"
           className="rounded-2xl bg-[#EBEDED] px-4 py-2 text-xs font-medium"
         >
           <option>Category</option>
