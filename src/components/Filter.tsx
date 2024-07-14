@@ -68,7 +68,7 @@ const Filter = () => {
           className="rounded-2xl bg-white px-4 py-2 text-xs font-medium ring-1 ring-gray-400"
           onChange={handleFilterChange}
         >
-          <option>Sort By</option>
+          <option value="default">Sort By</option>
           <option value="asc price">Price (low to high)</option>
           <option value="desc price">Price (high to low)</option>
           <option value="asc lastUpdated">Newest</option>

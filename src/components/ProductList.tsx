@@ -20,6 +20,8 @@ const ProductList = async ({
 }: ProductListProps) => {
   const wixClient = await wixClientServer();
 
+  let res;
+
   const productQuery = wixClient.products
     .queryProducts()
     .startsWith("name", searchParams?.name || "")
@@ -32,18 +34,19 @@ const ProductList = async ({
     .lt("priceData.price", searchParams?.max || 999999)
     .limit(limit || DEFAULT_PRODUCTS_LIMIT);
 
-  if (searchParams?.sort) {
+  // Added value="default" for Sort By option in Filter.tsx
+  if (searchParams?.sort && !searchParams?.sort.includes("default")) {
     const [sortType, sortBy] = searchParams.sort.split(" ");
 
-    if (sortType === "asc") productQuery.ascending(sortBy);
-    if (sortType === "desc") productQuery.descending(sortBy);
+    if (sortType === "asc") res = await productQuery.ascending(sortBy).find();
+    if (sortType === "desc") res = await productQuery.descending(sortBy).find();
+  } else {
+    res = await productQuery.find();
   }
-
-  const res = await productQuery.find();
 
   return (
     <div className="mt-12 flex flex-wrap justify-between gap-x-8 gap-y-16">
-      {res.items.map((product: products.Product) => (
+      {res?.items.map((product: products.Product) => (
         <Link
           key={product._id}
           href={`/${product.slug}`}
