@@ -5,6 +5,8 @@ import { wixClientServer } from "@/lib/wixClientServer";
 import ProductImages from "@/components/ProductImages";
 import CustomProducts from "@/components/CustomProducts";
 
+const DEFAULT_VARIANT_ID = "00000000-0000-0000-0000-000000000000";
+
 const SinglePage = async ({ params }: { params: { slug: string } }) => {
   const wixClient = await wixClientServer();
 
@@ -50,15 +52,19 @@ const SinglePage = async ({ params }: { params: { slug: string } }) => {
 
         <div className="h-[2px] bg-gray-100" />
 
-        {product.variants && product.productOptions && (
+        {product.variants && product.productOptions ? (
           <CustomProducts
             productId={product._id!}
             variants={product.variants}
             options={product.productOptions}
           />
+        ) : (
+          <Add
+            productId={product._id}
+            variantId={DEFAULT_VARIANT_ID}
+            stockNumber={product.stock?.quantity || 0}
+          />
         )}
-
-        <Add />
 
         <div className="h-[2px] bg-gray-100" />
 

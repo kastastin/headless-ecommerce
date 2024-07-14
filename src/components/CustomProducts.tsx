@@ -1,7 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { products } from "@wix/stores";
+
+import Add from "@/components/Add";
+
+const DEFAULT_VARIANT_ID = "00000000-0000-0000-0000-000000000000";
 
 interface CustomProductsProps {
   productId: string;
@@ -14,9 +18,24 @@ const CustomProducts = ({
   variants,
   options,
 }: CustomProductsProps) => {
+  const [selectedVariant, setSelectedVariant] = useState<products.Variant>();
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string;
   }>({});
+
+  useEffect(() => {
+    const variant = variants.find((v) => {
+      const variantChoices = v.choices;
+
+      if (!variantChoices) return false;
+
+      return Object.entries(selectedOptions).every(
+        ([key, value]) => variantChoices[key] === value,
+      );
+    });
+
+    setSelectedVariant(variant);
+  }, [selectedOptions, variants]);
 
   const handleOptionSelect = (optionType: string, choice: string) => {
     setSelectedOptions((prev) => ({ ...prev, [optionType]: choice }));
@@ -100,6 +119,12 @@ const CustomProducts = ({
           </ul>
         </div>
       ))}
+
+      <Add
+        productId={productId}
+        variantId={selectedVariant?._id || DEFAULT_VARIANT_ID}
+        stockNumber={selectedVariant?.stock?.quantity || 0}
+      />
     </div>
   );
 };
