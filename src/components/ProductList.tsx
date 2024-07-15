@@ -34,7 +34,6 @@ const ProductList = async ({
     .lt("priceData.price", searchParams?.max || 999999)
     .limit(limit || DEFAULT_PRODUCTS_LIMIT);
 
-  // Added value="default" for Sort By option in Filter.tsx
   if (searchParams?.sort && !searchParams?.sort.includes("default")) {
     const [sortType, sortBy] = searchParams.sort.split(" ");
 
