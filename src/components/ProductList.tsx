@@ -3,15 +3,16 @@ import Image from "next/image";
 import { products } from "@wix/stores";
 import DOMPurify from "isomorphic-dompurify";
 
+import Pagination from "@/components/Pagination";
 import { wixClientServer } from "@/lib/wixClientServer";
+
+const DEFAULT_PRODUCTS_LIMIT = 8;
 
 interface ProductListProps {
   limit?: number;
   categoryId: string;
   searchParams?: any;
 }
-
-const DEFAULT_PRODUCTS_LIMIT = 20;
 
 const ProductList = async ({
   limit,
@@ -32,7 +33,12 @@ const ProductList = async ({
     )
     .gt("priceData.price", searchParams?.min || 0)
     .lt("priceData.price", searchParams?.max || 999999)
-    .limit(limit || DEFAULT_PRODUCTS_LIMIT);
+    .limit(limit || DEFAULT_PRODUCTS_LIMIT)
+    .skip(
+      searchParams?.page
+        ? parseInt(searchParams.page) * (limit || DEFAULT_PRODUCTS_LIMIT)
+        : 0,
+    );
 
   if (searchParams?.sort && !searchParams?.sort.includes("default")) {
     const [sortType, sortBy] = searchParams.sort.split(" ");
@@ -94,6 +100,12 @@ const ProductList = async ({
           </button>
         </Link>
       ))}
+
+      <Pagination
+        currentPage={res?.currentPage || 0}
+        hasPrev={res?.hasPrev()!}
+        hasNext={res?.hasNext()!}
+      />
     </div>
   );
 };

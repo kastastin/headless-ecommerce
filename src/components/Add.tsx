@@ -38,11 +38,15 @@ const Add = ({ productId, variantId, stockNumber }: AddProps) => {
             </button>
           </div>
 
-          <div className="text-xs">
-            Only <span className="text-orange-500">{stockNumber} items</span>{" "}
-            left!
-            <br /> Don&apos;t miss it
-          </div>
+          {stockNumber < 1 ? (
+            <div className="text-xs">Product is out of stock</div>
+          ) : (
+            <div className="text-xs">
+              Only <span className="text-orange-500">{stockNumber} items</span>{" "}
+              left!
+              <br /> Don&apos;t miss it
+            </div>
+          )}
         </div>
 
         <button className="w-36 rounded-3xl p-2 text-sm text-red-400 ring-1 ring-red-400 hover:bg-red-400 hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:text-white disabled:ring-0">
