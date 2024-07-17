@@ -1,16 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
-import useToggleVisibility from "@/hooks/useToggleVisibility";
 import CartModal from "@/components/CartModal";
+import { useWixClient } from "@/hooks/useWixClient";
+import useToggleVisibility from "@/hooks/useToggleVisibility";
 
 const NavIcons = () => {
   const router = useRouter();
+  const wixClient = useWixClient();
 
-  const isLoggedIn = false; // TEMPORARY
+  const isLoggedIn = wixClient.auth.loggedIn();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     iconRef: cartIconRef,
@@ -27,9 +33,21 @@ const NavIcons = () => {
   } = useToggleVisibility();
 
   const handleProfile = () => {
-    if (!isLoggedIn) router.push("/login");
+    if (!isLoggedIn) {
+      router.push("/login");
+    } else {
+      toggleProfile();
+    }
+  };
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    Cookies.remove("refreshToken");
+    const { logoutUrl } = await wixClient.auth.logout(window.location.href);
+    setIsLoading(false);
 
     toggleProfile();
+    router.push(logoutUrl);
   };
 
   return (
@@ -47,10 +65,12 @@ const NavIcons = () => {
       {isProfileOpen && (
         <div
           ref={profileContentRef}
-          className="absolute left-0 top-12 z-20 rounded-md p-4 text-sm shadow-custom"
+          className="absolute left-0 top-12 z-20 rounded-md bg-white p-4 text-sm shadow-custom"
         >
           <Link href="/">Profile</Link>
-          <div className="mt-2 cursor-pointer">Logout</div>
+          <div className="mt-2 cursor-pointer" onClick={handleLogout}>
+            {isLoading ? "Logging out" : "Logout"}
+          </div>
         </div>
       )}
       <Image

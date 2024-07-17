@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 
 import Menu from "@/components/Menu";
-import NavIcons from "@/components/NavIcons";
 import Searchbar from "@/components/SearchBar";
+
+const NavIcons = dynamic(() => import("@/components/NavIcons"), { ssr: false });
 
 const Navbar = () => {
   return (
