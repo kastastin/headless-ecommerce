@@ -1,10 +1,23 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
+
+import { useWixClient } from "@/hooks/useWixClient";
 
 const CartModal = React.forwardRef<HTMLDivElement>((props, ref) => {
   const cartItems = true; // TEMPORARY
+
+  const wixClient = useWixClient();
+
+  useEffect(() => {
+    const getCart = async () => {
+      const res = await wixClient.currentCart.getCurrentCart();
+      console.log(res);
+    };
+
+    getCart();
+  }, [wixClient]);
 
   return (
     <div
