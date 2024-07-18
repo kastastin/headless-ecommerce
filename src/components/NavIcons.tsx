@@ -1,22 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
 import CartModal from "@/components/CartModal";
+import { useCartStore } from "@/hooks/useCartStore";
 import { useWixClient } from "@/hooks/useWixClient";
 import useToggleVisibility from "@/hooks/useToggleVisibility";
 
 const NavIcons = () => {
   const router = useRouter();
   const wixClient = useWixClient();
+  const { counter, getCart } = useCartStore();
 
   const isLoggedIn = wixClient.auth.loggedIn();
-
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    getCart(wixClient);
+  }, [wixClient, getCart]);
 
   const {
     iconRef: cartIconRef,
@@ -93,7 +98,7 @@ const NavIcons = () => {
           className="cursor-pointer"
         />
         <div className="absolute -right-4 -top-4 flex size-6 items-center justify-center rounded-full bg-red-400 text-sm text-white">
-          2
+          {counter}
         </div>
       </div>
       {isCartOpen && <CartModal ref={cartContentRef} />}
